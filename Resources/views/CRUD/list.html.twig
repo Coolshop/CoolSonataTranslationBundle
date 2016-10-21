@@ -2,7 +2,7 @@
 
 {% block actions %}
     {% spaceless %}
-        <li>{% include 'IbrowsSonataTranslationBundle:Core:clear_cache_button.html.twig' %}</li>
+        <li>{% include 'CoolSonataTranslationBundle:Core:clear_cache_button.html.twig' %}</li>
         {% if admin.hasRoute('create') and admin.isGranted('CREATE')%}
             <li>{% include 'SonataAdminBundle:Core:create_button.html.twig' %}</li>
         {% endif %}

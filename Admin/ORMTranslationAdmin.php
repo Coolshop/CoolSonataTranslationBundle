@@ -1,6 +1,6 @@
 <?php
 
-namespace Ibrows\SonataTranslationBundle\Admin;
+namespace Coolshop\CoolSonataTranslationBundle\Admin;
 
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;

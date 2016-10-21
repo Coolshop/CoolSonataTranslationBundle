@@ -1,9 +1,9 @@
 <?php
 
-namespace Ibrows\SonataTranslationBundle\Controller;
+namespace Coolshop\CoolSonataTranslationBundle\Controller;
 
 use Doctrine\DBAL\DBALException;
-use Ibrows\SonataTranslationBundle\Event\RemoveLocaleCacheEvent;
+use Coolshop\CoolSonataTranslationBundle\Event\RemoveLocaleCacheEvent;
 use Lexik\Bundle\TranslationBundle\Entity\TransUnit;
 use Lexik\Bundle\TranslationBundle\Manager\TranslationInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;

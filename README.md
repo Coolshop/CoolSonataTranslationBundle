@@ -3,7 +3,7 @@
 
 The SonataTranslationBundle is an integration of the LexikTranslationBundle into the SonataAdminBundle.
 
-![image](https://raw.github.com/ibrows/IbrowsSonataTranslationBundle/master/Resources/doc/screen/overview.png)
+![image](https://raw.github.com/ibrows/CoolSonataTranslationBundle/master/Resources/doc/screen/overview.png)
 
 ## Installation
 
@@ -28,7 +28,7 @@ public function registerBundles()
     $bundles = array(
         // ...
 		new Lexik\Bundle\TranslationBundle\LexikTranslationBundle(),
-		new Ibrows\SonataTranslationBundle\IbrowsSonataTranslationBundle(),
+		new Coolshop\CoolSonataTranslationBundle\CoolSonataTranslationBundle(),
     );
 )
 ```

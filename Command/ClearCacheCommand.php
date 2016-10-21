@@ -1,6 +1,6 @@
 <?php
 
-namespace Ibrows\SonataTranslationBundle\Command;
+namespace Coolshop\CoolSonataTranslationBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class ClearCacheCommand
- * @package Ibrows\SonataTranslationBundle\Command
+ * @package Coolshop\CoolSonataTranslationBundle\Command
  */
 class ClearCacheCommand extends ContainerAwareCommand
 {

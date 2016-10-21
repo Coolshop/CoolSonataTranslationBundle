@@ -11,6 +11,6 @@
         "asm/translation-loader-bundle": "~1.0"
     },
     "autoload": {
-        "psr-4": { "Ibrows\\SonataTranslationBundle\\": "" }
+        "psr-4": { "Coolshop\\CoolSonataTranslationBundle\\": "" }
     }
 }

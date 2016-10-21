@@ -1,6 +1,6 @@
 <?php
 
-namespace Ibrows\SonataTranslationBundle\Admin;
+namespace Coolshop\CoolSonataTranslationBundle\Admin;
 
 use Sonata\AdminBundle\Route\RouteCollection;
 use Lexik\Bundle\TranslationBundle\Manager\TransUnitManagerInterface;
@@ -131,11 +131,11 @@ abstract class TranslationAdmin extends Admin
     public function getTemplate($name)
     {
         if ($name === 'layout') {
-            return 'IbrowsSonataTranslationBundle::translation_layout.html.twig';
+            return 'CoolSonataTranslationBundle::translation_layout.html.twig';
         }
 
         if ($name === 'list') {
-            return 'IbrowsSonataTranslationBundle:CRUD:list.html.twig';
+            return 'CoolSonataTranslationBundle:CRUD:list.html.twig';
         }
 
         return parent::getTemplate($name);
@@ -175,7 +175,7 @@ abstract class TranslationAdmin extends Admin
         foreach ($localesToShow as $locale) {
             $fieldDescription = $this->modelManager->getNewFieldDescriptionInstance($this->getClass(), $locale);
             $fieldDescription->setTemplate(
-                'IbrowsSonataTranslationBundle:CRUD:base_inline_translation_field.html.twig'
+                'CoolSonataTranslationBundle:CRUD:base_inline_translation_field.html.twig'
             );
             $fieldDescription->setOption('locale', $locale);
             $fieldDescription->setOption('editable', $this->editableOptions);
@@ -241,7 +241,7 @@ abstract class TranslationAdmin extends Admin
     {
         $actions = parent::getBatchActions();
         $actions['download'] = array(
-            'label'            => $this->trans($this->getLabelTranslatorStrategy()->getLabel('download', 'batch', 'IbrowsSonataTranslationBundle')),
+            'label'            => $this->trans($this->getLabelTranslatorStrategy()->getLabel('download', 'batch', 'CoolSonataTranslationBundle')),
             'ask_confirmation' => false,
         );
 

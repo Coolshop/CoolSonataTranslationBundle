@@ -3,7 +3,7 @@
  * @author    Mike Lohmann <mike@protofy.com>
  * @copyright 2015 Protofy GmbH & Co. KG
  */
-namespace Ibrows\SonataTranslationBundle\Event;
+namespace Coolshop\CoolSonataTranslationBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 

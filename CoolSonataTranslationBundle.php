@@ -1,12 +1,12 @@
 <?php
 
-namespace Ibrows\SonataTranslationBundle;
+namespace Coolshop\CoolSonataTranslationBundle;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class IbrowsSonataTranslationBundle extends Bundle
+class CoolSonataTranslationBundle extends Bundle
 {
     
  /**
