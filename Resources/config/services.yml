@@ -1,0 +1,15 @@
+parameters:
+    cool_sonata_translation.admin.orm.class: Coolshop\CoolSonataTranslationBundle\Admin\ORMTranslationAdmin
+services:
+    cool_sonata_translation.admin.orm:
+        class: %cool_sonata_translation.admin.orm.class%
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: group.translation, label_catalogue: CoolSonataTranslationBundle, label: translation.title }
+        arguments: ['', Asm\TranslationLoaderBundle\Entity\Translation, 'CoolSonataTranslationBundle:TranslationCRUD']
+        calls:
+            - [setEditableOptions, ['%cool_sonata_translation.editable%']]
+            - [setTranslationDomain, [CoolSonataTranslationBundle]]
+            - [setManagedLocales, ['Should never be called']]
+            - [setDefaultSelections, ['%cool_sonata_translation.defaultSelections%']]
+            - [setEmptyPrefixes, ['%cool_sonata_translation.emptyPrefixes%']]
+

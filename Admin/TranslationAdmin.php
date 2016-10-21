@@ -50,19 +50,12 @@ abstract class TranslationAdmin extends Admin
     }
 
     /**
-     * @param TransUnitManagerInterface $translationManager
-     */
-    public function setTransUnitManager(TransUnitManagerInterface $translationManager)
-    {
-        $this->transUnitManager = $translationManager;
-    }
-
-    /**
+     * @TODO: remove this
      * @param array $managedLocales
      */
-    public function setManagedLocales(array $managedLocales)
+    public function setManagedLocales($managedLocales)
     {
-        $this->managedLocales = $managedLocales;
+        $this->managedLocales = array('en', 'it');
     }
 
     /**
@@ -231,7 +224,7 @@ abstract class TranslationAdmin extends Admin
      */
     protected function getDefaultDomain()
     {
-        return $this->getContainer()->getParameter('ibrows_sonata_translation.defaultDomain');
+        return $this->getContainer()->getParameter('cool_sonata_translation.defaultDomain');
     }
 
     /**

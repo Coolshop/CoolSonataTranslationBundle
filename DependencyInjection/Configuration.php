@@ -19,7 +19,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('ibrows_sonata_translation');
+        $rootNode = $treeBuilder->root('cool_sonata_translation');
 
         $this->addEditableSection($rootNode);
 
