@@ -106,7 +106,7 @@ abstract class TranslationAdmin extends Admin
     {
         $this->datagridValues = array_merge(
             array(
-                'domain' => array(
+                'message_domain' => array(
                     'value' => $this->getDefaultDomain(),
                 ),
             ),
@@ -160,8 +160,8 @@ abstract class TranslationAdmin extends Admin
     {
         $list
             ->add('id', 'integer')
-            ->add('key', 'string')
-            ->add('domain', 'string');
+            ->add('trans_key', 'string')
+            ->add('message_domain', 'string');
 
         $localesToShow = count($this->filterLocales) > 0 ? $this->filterLocales : $this->managedLocales;
 
@@ -206,9 +206,10 @@ abstract class TranslationAdmin extends Admin
             $subject->setDomain($this->getDefaultDomain());
         }
 
+
         $form
-            ->add('key', 'text')
-            ->add('domain', 'text');
+            ->add('trans_key', 'text')
+            ->add('message_domain', 'text');
     }
 
     /**

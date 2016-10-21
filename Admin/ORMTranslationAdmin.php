@@ -13,7 +13,7 @@ class ORMTranslationAdmin extends TranslationAdmin
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
         /** @var \Doctrine\ORM\EntityManager $em */
-        $em = $this->getContainer()->get('doctrine')->getManagerForClass('\Asm\TranslationLoaderBundle\Entity\Translation');
+        $em = $this->getContainer()->get('doctrine')->getManager();
 
         $domains = array();
         $domainsQueryResult = $em->createQueryBuilder()
