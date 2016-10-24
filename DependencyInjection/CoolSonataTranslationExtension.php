@@ -22,11 +22,48 @@ class CoolSonataTranslationExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
+        // set entity manager for translations
+        $em = 'default';
+        if (isset($config['database']['entity_manager'])
+            && $config['database']['entity_manager'] != 'default'
+        ) {
+            $em = $config['database']['entity_manager'];
+        }
+
+
+        // get all bundles
+        $bundles = $container->getParameter('kernel.bundles');
+        // determine if SonataPageBundle is registered
+        if (isset($bundles['SonataPageBundle'])) {
+            var_dump($container->getDefinitions());
+            die;
+            $def = $container->getDefinition('cool_sonata_translation.locale_manager.sonatapage');
+            $def->setArguments(array(
+                $container->getDefinition('sonata.page.manager.site')
+            ));
+        }
+
+        //IF IS SERVICE
+        if (count($config['localeManager']) == 1 && $container->hasDefinition(str_replace('@', '', $config['localeManager'][0]))) {
+            $container->setAlias('cool_sonata_translation.locale_manager', str_replace('@', '', $config['localeManager'][0]));
+        
+        } else {
+        // USE LOCALES AS ARRAY CONFIGURATIONS
+            $container->setParameter('cool_sonata_translation.locale_manager.locales', $config['localeManager']);
+            $container->setAlias('cool_sonata_translation.locale_manager', 'cool_sonata_translation.locale_manager.config');
+
+            $def = $container->getDefinition('cool_sonata_translation.locale_manager.config');
+            $def->setArguments(array(
+                $container->getParameter('cool_sonata_translation.locale_manager.locales')
+            ));
+        };
 
         $this->registerContainerParametersRecursive($container, $this->getAlias(), $config);
+        // die;
     }
 
     /**

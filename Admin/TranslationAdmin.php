@@ -3,19 +3,15 @@
 namespace Coolshop\CoolSonataTranslationBundle\Admin;
 
 use Sonata\AdminBundle\Route\RouteCollection;
-use Lexik\Bundle\TranslationBundle\Manager\TransUnitManagerInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Admin\Admin;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Coolshop\CoolSonataTranslationBundle\Manager\LocaleManagerInterface;
 
 abstract class TranslationAdmin extends Admin
 {
-    /**
-     * @var TransUnitManagerInterface
-     */
-    protected $transUnitManager;
     /**
      * @var array
      */
@@ -50,12 +46,11 @@ abstract class TranslationAdmin extends Admin
     }
 
     /**
-     * @TODO: remove this
-     * @param array $managedLocales
+     * @param LocaleManagerInterface $localeManager
      */
-    public function setManagedLocales($managedLocales)
+    public function setManagedLocales($localeManager)
     {
-        $this->managedLocales = array('en', 'it');
+        $this->managedLocales = $localeManager->getAvailableLocales();
     }
 
     /**
@@ -106,7 +101,7 @@ abstract class TranslationAdmin extends Admin
     {
         $this->datagridValues = array_merge(
             array(
-                'message_domain' => array(
+                'domain' => array(
                     'value' => $this->getDefaultDomain(),
                 ),
             ),
@@ -159,9 +154,9 @@ abstract class TranslationAdmin extends Admin
     protected function configureListFields(ListMapper $list)
     {
         $list
-            ->add('id', 'integer')
-            ->add('trans_key', 'string')
-            ->add('message_domain', 'string');
+            ->addIdentifier('id', 'integer')
+            ->add('transKey', 'string')
+            ->add('domain', 'string');
 
         $localesToShow = count($this->filterLocales) > 0 ? $this->filterLocales : $this->managedLocales;
 
@@ -209,7 +204,7 @@ abstract class TranslationAdmin extends Admin
 
         $form
             ->add('trans_key', 'text')
-            ->add('message_domain', 'text');
+            ->add('domain', 'text');
     }
 
     /**

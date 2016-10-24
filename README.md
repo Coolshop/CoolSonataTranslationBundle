@@ -27,7 +27,6 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-		new Asm\TranslationLoaderBundle\AsmTranslationLoaderBundle(),
         new Coolshop\CoolSonataTranslationBundle\CoolSonataTranslationBundle(),
     );
 )

@@ -19,9 +19,9 @@ file that was distributed with this source code.
 {% endfor %}
 {% set id = 'transunit'~'-'~object.id~'-'~locale %}
 {% set pk = translation.id|default('') %}
-{% set content = translation.content|default('') %}
+{% set label = translation.label|default('') %}
 <a href="#" id="{{ id }}" data-pk="{{ pk }}">
-    {%- block field %}{{ content }}{% endblock -%}
+    {%- block field %}{{ label }}{% endblock -%}
 </a>
 
 {% if admin.isGranted('EDIT', object) %}
@@ -33,7 +33,7 @@ file that was distributed with this source code.
         emptytext: "{{ options.emptytext }}",
         placement: "{{ options.placement }}",
         url: {{ admin.generateObjectUrl(field_description.options.route.name, object, field_description.options.route.parameters)|json_encode|raw }},
-        name: {{ object.key|json_encode|raw }},
+        name: {{ object.transKey|json_encode|raw }},
         params: function(params) {
             // make sure pk is always loaded from element
             params.pk = jQuery(this).attr('data-pk');
@@ -48,7 +48,7 @@ file that was distributed with this source code.
             jQuery(this).attr('data-pk', response.pk);
             return response;
         },
-        value: {{ content|json_encode|raw }}
+        value: {{ label|json_encode|raw }}
     });
 </script>
 {% endif %}

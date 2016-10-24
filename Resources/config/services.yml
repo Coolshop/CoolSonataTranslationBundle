@@ -1,15 +1,49 @@
 parameters:
     cool_sonata_translation.admin.orm.class: Coolshop\CoolSonataTranslationBundle\Admin\ORMTranslationAdmin
+    cool_sonata_translation.translation_loader_class:  Coolshop\CoolSonataTranslationBundle\Translation\DatabaseLoader
+    cool_sonata_translation.file_loader_resolver.class: Coolshop\CoolSonataTranslationBundle\Translation\FileLoaderResolver
+    cool_sonata_translation.translation_manager_resource.class: Coolshop\CoolSonataTranslationBundle\Config\Resource\TranslationManagerResource
+    cool_sonata_translation.translation_manager.class: Coolshop\CoolSonataTranslationBundle\Repository\CoolTranslationKeyRepository
+    cool_sonata_translation.translation_manager.entity: Coolshop\CoolSonataTranslationBundle\Entity\CoolTranslationKey
+    cool_sonata_translation.locale_manager.sonatapage.class: Coolshop\CoolSonataTranslationBundle\Manager\SonataPageLocaleManager
+    cool_sonata_translation.locale_manager.config.class: Coolshop\CoolSonataTranslationBundle\Manager\ConfigLocaleManager
 services:
     cool_sonata_translation.admin.orm:
         class: %cool_sonata_translation.admin.orm.class%
         tags:
             - { name: sonata.admin, manager_type: orm, group: group.translation, label_catalogue: CoolSonataTranslationBundle, label: translation.title }
-        arguments: ['', Asm\TranslationLoaderBundle\Entity\Translation, 'CoolSonataTranslationBundle:TranslationCRUD']
+        arguments: ['', Coolshop\CoolSonataTranslationBundle\Entity\CoolTranslationKey, 'CoolSonataTranslationBundle:TranslationCRUD']
         calls:
             - [setEditableOptions, ['%cool_sonata_translation.editable%']]
             - [setTranslationDomain, [CoolSonataTranslationBundle]]
-            - [setManagedLocales, ['Should never be called']]
             - [setDefaultSelections, ['%cool_sonata_translation.defaultSelections%']]
             - [setEmptyPrefixes, ['%cool_sonata_translation.emptyPrefixes%']]
+            - [setManagedLocales, ['@cool_sonata_translation.locale_manager']]
+    # database loader
+    translation.loader.db:
+        class:     '%cool_sonata_translation.translation_loader_class%'
+        arguments: [ '@cool_sonata_translation.translation_manager' ]
+        tags:
+            - { name: translation.loader, alias: db}
+    # file loader resolver
+    cool_sonata_translation.file_loader_resolver:
+        class: %cool_sonata_translation.file_loader_resolver.class%
 
+    # translation manager
+    cool_sonata_translation.translation_manager_resource:
+        class: %cool_sonata_translation.translation_manager_resource.class%
+        arguments: ['@translation.loader.db']
+    
+    cool_sonata_translation.translation_manager:
+        class: %cool_sonata_translation.translation_manager.class%
+        factory: ["@doctrine", getRepository]
+        arguments: [%cool_sonata_translation.translation_manager.entity%]
+
+    cool_sonata_translation.locale_manager.sonatapage: 
+        class: %cool_sonata_translation.locale_manager.sonatapage.class%
+        arguments: 
+            [] #[@sonata.page.manager.site]
+    cool_sonata_translation.locale_manager.config: 
+        class: %cool_sonata_translation.locale_manager.config.class%
+        arguments: 
+            [[]] #[%cool_sonata_translation.locale_manager.locales%]

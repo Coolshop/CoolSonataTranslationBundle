@@ -4,8 +4,6 @@ namespace Coolshop\CoolSonataTranslationBundle\Controller;
 
 use Doctrine\DBAL\DBALException;
 use Coolshop\CoolSonataTranslationBundle\Event\RemoveLocaleCacheEvent;
-use Lexik\Bundle\TranslationBundle\Entity\TransUnit;
-use Lexik\Bundle\TranslationBundle\Manager\TranslationInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Sonata\AdminBundle\Controller\CRUDController;
@@ -39,13 +37,14 @@ class TranslationCRUDController extends CRUDController
             return $this->redirect($this->admin->generateUrl('list'));
         }
 
-        /* @var $transUnit \Lexik\Bundle\TranslationBundle\Model\TransUnit */
-        $transUnit = $this->get('lexik_translation.translation_storage')->getTransUnitById($id);
-        if (!$transUnit) {
+        $transManager = $this->get('cool_sonata_translation.translation_manager');
+
+        $transKey = $transManager->findOneById($id);
+        if (!$transKey) {
             throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
         }
 
-        if (false === $this->admin->isGranted('EDIT', $transUnit)) {
+        if (false === $this->admin->isGranted('EDIT', $transKey)) {
             return $this->renderJson(
                 array(
                     'message' => 'access denied',
@@ -54,10 +53,7 @@ class TranslationCRUDController extends CRUDController
             );
         }
 
-        $this->admin->setSubject($transUnit);
-
-        /* @var $transUnitManager \Lexik\Bundle\TranslationBundle\Manager\TransUnitManager */
-        $transUnitManager = $this->get('lexik_translation.trans_unit.manager');
+        $this->admin->setSubject($transKey);
 
         $parameters = $this->getRequest()->request;
 
@@ -75,9 +71,9 @@ class TranslationCRUDController extends CRUDController
 
         /* @var $translation \Lexik\Bundle\TranslationBundle\Model\Translation */
         if ($parameters->get('pk')) {
-            $translation = $transUnitManager->updateTranslation($transUnit, $locale, $content, true);
+            $translation = $transManager->updateTranslation($transKey, $locale, $content, true);
         } else {
-            $translation = $transUnitManager->addTranslation($transUnit, $locale, $content, null, true);
+            $translation = $transManager->addTranslation($transKey, $locale, $content, true);
         }
 
         if ($request->query->get('clear_cache')) {
@@ -86,11 +82,11 @@ class TranslationCRUDController extends CRUDController
 
         return $this->renderJson(
             array(
-                'key' => $transUnit->getKey(),
-                'domain' => $transUnit->getDomain(),
+                'key' => $transKey->getTransKey(),
+                'domain' => $transKey->getDomain(),
                 'pk' => $translation->getId(),
                 'locale' => $translation->getLocale(),
-                'value' => $translation->getContent(),
+                'value' => $translation->getLabel(),
             )
         );
     }
@@ -131,7 +127,7 @@ class TranslationCRUDController extends CRUDController
         }
 
         /* @var $transUnitManager \Lexik\Bundle\TranslationBundle\Manager\TransUnitManager */
-        $transUnitManager = $this->get('lexik_translation.trans_unit.manager');
+        $transUnitManager = $this->get('cool_sonata_translation.translation_manager');
         $transUnit = $transUnitManager->create($keyName, $domainName, true);
 
         return $this->editAction($transUnit->getId());
@@ -181,11 +177,11 @@ class TranslationCRUDController extends CRUDController
                      */
                     foreach ($queryProxy->getQuery()->iterate() as $pos => $object) {
                         foreach ($object as $transUnit) {
-                            $chunkPrefix = $transUnit->getDomain() . '__' . $transUnit->getKey() . '__' . $transUnit->getId() . '__';
+                            $chunkPrefix = $transUnit->getDomain() . '__' . $transUnit->getTransKey() . '__' . $transUnit->getId() . '__';
                             $chunk = array();
                             /** @var TranslationInterface $translation */
                             foreach ($transUnit->getTranslations() as $translation) {
-                                $chunk[$chunkPrefix.$translation->getLocale()] = $translation->getContent();
+                                $chunk[$chunkPrefix.$translation->getLocale()] = $translation->getLabel();
                             }
                             echo $dumper->dump($chunk, 2);
                             flush();

@@ -17,7 +17,7 @@ class ORMTranslationAdmin extends TranslationAdmin
 
         $domains = array();
         $domainsQueryResult = $em->createQueryBuilder()
-            ->select('DISTINCT t.messageDomain')->from('\Asm\TranslationLoaderBundle\Entity\Translation', 't')
+            ->select('DISTINCT t.domain')->from('\Coolshop\CoolSonataTranslationBundle\Entity\CoolTranslationKey', 't')
             ->getQuery()
             ->getResult(Query::HYDRATE_ARRAY);
 
@@ -65,10 +65,10 @@ class ORMTranslationAdmin extends TranslationAdmin
 
                         foreach ($this->getEmptyFieldPrefixes() as $prefix) {
                             if (empty($prefix)) {
-                                $queryBuilder->orWhere('translations.content IS NULL');
+                                $queryBuilder->orWhere('translations.label IS NULL');
                             } else {
-                                $queryBuilder->orWhere('translations.content LIKE :content')->setParameter(
-                                    'content',
+                                $queryBuilder->orWhere('translations.label LIKE :label')->setParameter(
+                                    'label',
                                     $prefix . '%'
                                 );
                             }
@@ -82,7 +82,7 @@ class ORMTranslationAdmin extends TranslationAdmin
                     'field_type'    => 'checkbox',
                 )
             )
-            ->add('key', 'doctrine_orm_string')
+            ->add('transKey', 'doctrine_orm_string')
             ->add(
                 'domain',
                 'doctrine_orm_choice',
@@ -99,7 +99,7 @@ class ORMTranslationAdmin extends TranslationAdmin
                 )
             )
             ->add(
-                'content',
+                'label',
                 'doctrine_orm_callback',
                 array
                 (
@@ -109,13 +109,13 @@ class ORMTranslationAdmin extends TranslationAdmin
                             return;
                         }
                         $this->joinTranslations($queryBuilder, $alias);
-                        $queryBuilder->andWhere('translations.content LIKE :content')->setParameter(
-                            'content',
+                        $queryBuilder->andWhere('translations.label LIKE :label')->setParameter(
+                            'label',
                             '%' . $options['value'] . '%'
                         );
                     },
                     'field_type' => 'text',
-                    'label'      => 'content',
+                    'label'      => 'label',
                 )
             );
     }
