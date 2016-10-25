@@ -43,6 +43,16 @@ class CoolTranslationKeyRepository extends \Doctrine\ORM\EntityRepository
         	->getSingleScalarResult();
     }
 
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeTranslation(CoolTranslationKey $transKey)
+    {
+        $this->getEntityManager()->remove($transKey);
+        $this->getEntityManager()->flush();
+    }
+
     public function create($key, $domain, $flush = false)
     {
     	$transKey = $this->newInstance();
@@ -86,7 +96,6 @@ class CoolTranslationKeyRepository extends \Doctrine\ORM\EntityRepository
         $i = 0;
         $end = $transKey->getTranslations()->count();
         $translation = $transKey->getTranslationByLocale($locale);
-        dump($translation);
 
         if (!is_null($translation)) {
             if ($merge) {

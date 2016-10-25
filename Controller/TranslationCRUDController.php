@@ -134,6 +134,7 @@ class TranslationCRUDController extends CRUDController
     }
 
     /**
+     * @todo remove
      * @return RedirectResponse
      */
     public function clearCacheAction()

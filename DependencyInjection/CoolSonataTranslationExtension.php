@@ -37,22 +37,16 @@ class CoolSonataTranslationExtension extends Extension
 
         // get all bundles
         $bundles = $container->getParameter('kernel.bundles');
-        // determine if SonataPageBundle is registered
         if (isset($bundles['SonataPageBundle'])) {
-            var_dump($container->getDefinitions());
-            die;
-            $def = $container->getDefinition('cool_sonata_translation.locale_manager.sonatapage');
-            $def->setArguments(array(
-                $container->getDefinition('sonata.page.manager.site')
-            ));
+            $loader->load('sonata-page.yml');
         }
-
+        
         //IF IS SERVICE
         if (count($config['localeManager']) == 1 && $container->hasDefinition(str_replace('@', '', $config['localeManager'][0]))) {
             $container->setAlias('cool_sonata_translation.locale_manager', str_replace('@', '', $config['localeManager'][0]));
         
         } else {
-        // USE LOCALES AS ARRAY CONFIGURATIONS
+            // USE LOCALES AS ARRAY CONFIGURATIONS
             $container->setParameter('cool_sonata_translation.locale_manager.locales', $config['localeManager']);
             $container->setAlias('cool_sonata_translation.locale_manager', 'cool_sonata_translation.locale_manager.config');
 
@@ -63,7 +57,6 @@ class CoolSonataTranslationExtension extends Extension
         };
 
         $this->registerContainerParametersRecursive($container, $this->getAlias(), $config);
-        // die;
     }
 
     /**

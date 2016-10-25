@@ -1,0 +1,7 @@
+parameters:
+    cool_sonata_translation.locale_manager.sonatapage.class: Coolshop\CoolSonataTranslationBundle\Manager\SonataPageLocaleManager
+services:
+    cool_sonata_translation.locale_manager.sonatapage: 
+        class: %cool_sonata_translation.locale_manager.sonatapage.class%
+        arguments: 
+            [@sonata.page.manager.site]
