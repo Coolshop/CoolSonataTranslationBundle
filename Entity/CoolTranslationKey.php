@@ -62,7 +62,7 @@ class CoolTranslationKey
     /**
      * Set transKey
      *
-     * @param string $transKey
+     * @param string $transKey  
      *
      * @return CoolTranslationKey
      */
@@ -115,6 +115,21 @@ class CoolTranslationKey
     public function getTranslations()
     {
         return $this->translations = $this->translations ?: new ArrayCollection();
+    }
+
+    /**
+     * Returns translation for a locale of translations.
+     *
+     * @return ArrayCollection
+     */
+    public function getTranslation($locale)
+    {
+        foreach ($this->translations as $translation) {
+            if ($translation->getLocale() == $locale){
+                return $translation;
+            }
+        }
+        return null;
     }
 
     /**

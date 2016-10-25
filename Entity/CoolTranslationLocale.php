@@ -170,7 +170,7 @@ class CoolTranslationLocale
      */
     public function getTransKey()
     {
-        return $this->label;
+        return $this->transKey;
     }
 
     /**
