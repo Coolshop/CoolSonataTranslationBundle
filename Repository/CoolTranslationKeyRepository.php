@@ -125,6 +125,8 @@ class CoolTranslationKeyRepository extends \Doctrine\ORM\EntityRepository
                 $translation = $newTranslation;
             }
             $translation->setLabel($content);
+        } else {
+            return $this->addTranslation($transKey, $locale, $content, $flush);
         }
 
         if (null !== $translation && $this->getEntityManager() instanceof PropelStorage) {
