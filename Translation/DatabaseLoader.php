@@ -51,8 +51,8 @@ class DatabaseLoader implements LoaderInterface, ResourceInterface
         $catalogue = new MessageCatalogue($locale);
 
         foreach ($translationsKeys as $transKey) {
-            foreach ($transKey as $transLabel) {
-                $catalogue->set($transKey->getTransKey(), $transKey->getLabel(), $messageDomain);
+            foreach ($transKey->getTranslations() as $transLabel) {
+                $catalogue->set($transKey->getTransKey(), $transLabel->getLabel(), $messageDomain);
             }
         }
 

@@ -54,13 +54,15 @@ class GenerateDummyFilesCommand extends BaseTranslationCommand
         }
 
         $translationManager = $this->getTranslationManager();
-        $translations       = $translationManager->findAllTranslations();
+        $transKeys       = $translationManager->findAll();
 
-        foreach ($translations as $translation) {
-            $filename = $translation->getMessageDomain() . '.' . $translation->getTransLocale() . '.db';
+        foreach ($transKeys as $tKey) {
+            foreach ($tKey->getTranslations() as $transLabel) {
+                $filename = $tKey->getDomain() . '.' . $transLabel->getLocale() . '.db';
 
-            if (!$fs->exists($translationPath . $filename)) {
-                $fs->touch($translationPath . $filename);
+                if (!$fs->exists($translationPath . $filename)) {
+                    $fs->touch($translationPath . $filename);
+                }
             }
         }
 

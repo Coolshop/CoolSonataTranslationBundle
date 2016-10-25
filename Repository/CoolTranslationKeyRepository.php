@@ -31,6 +31,16 @@ class CoolTranslationKeyRepository extends \Doctrine\ORM\EntityRepository
 		return $query->getResult();
 	}
 
+    public function findAll()
+    {
+        return $this->getEntityManager()->createQuery("
+                SELECT tK, tL
+                FROM CoolSonataTranslationBundle:CoolTranslationKey tK
+                JOIN tK.translations tL
+            ")
+            ->getResult();
+    }
+
 	public function findTranslationFreshness($timestamp)
     {
         return $this->getEntityManager()->createQuery("
