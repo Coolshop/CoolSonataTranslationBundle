@@ -17,9 +17,9 @@ class CoolTranslationKeyRepository extends \Doctrine\ORM\EntityRepository
 	public function findTranslationsByLocaleAndDomain($locale, $domain = 'messages')
 	{
 		$query = $this->getEntityManager()->createQuery("
-				SELECT tK, tL
-				FROM CoolSonataTranslationBundle:CoolTranslationKey tK
-				JOIN tK.translations tL
+				SELECT tL
+				FROM CoolSonataTranslationBundle:CoolTranslationLocale tL
+				JOIN CoolSonataTranslationBundle:CoolTranslationKey tK
 				WHERE tK.domain = :domain
 					AND tL.locale = :locale
 			")
@@ -27,7 +27,6 @@ class CoolTranslationKeyRepository extends \Doctrine\ORM\EntityRepository
 			"domain" => $domain,
 			"locale" => $locale
 		));
-
 		return $query->getResult();
 	}
 
