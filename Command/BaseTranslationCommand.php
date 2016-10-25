@@ -33,6 +33,14 @@ abstract class BaseTranslationCommand extends ContainerAwareCommand
     }
 
     /**
+     * Returns the configured translation manager.
+     */
+    protected function getLocaleManager()
+    {
+        return $this->getContainer()->get('cool_sonata_translation.locale_manager');
+    }
+
+    /**
      * Returns the translation writer.
      *
      * @return TranslationWriter

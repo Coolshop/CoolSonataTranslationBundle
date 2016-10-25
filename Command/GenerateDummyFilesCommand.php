@@ -5,6 +5,7 @@
 namespace Coolshop\CoolSonataTranslationBundle\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -26,7 +27,15 @@ class GenerateDummyFilesCommand extends BaseTranslationCommand
     {
         $this
             ->setName('cool:translations:dummy')
-            ->setDescription('generate dummy files for translation loader');
+            ->setDescription('generate dummy files for translation loader')
+            ->addOption(
+                'force',
+                'f',
+                InputOption::VALUE_OPTIONAL,
+                'force creation of all locales for the given domain.',
+                'messages'
+            )
+            ;
     }
 
 
@@ -53,15 +62,29 @@ class GenerateDummyFilesCommand extends BaseTranslationCommand
             $fs->mkdir($translationPath);
         }
 
-        $translationManager = $this->getTranslationManager();
-        $transKeys       = $translationManager->findAll();
+        if ($forceDomain = $input->getOption('force')) {
 
-        foreach ($transKeys as $tKey) {
-            foreach ($tKey->getTranslations() as $transLabel) {
-                $filename = $tKey->getDomain() . '.' . $transLabel->getLocale() . '.db';
+            $translationManager = $this->getLocaleManager();
+            $localeArray = $translationManager->getAvailableLocales();
+            foreach ($localeArray as $locale) {
+                $filename = $forceDomain . '.' . $locale . '.db';
 
                 if (!$fs->exists($translationPath . $filename)) {
                     $fs->touch($translationPath . $filename);
+                }
+            }
+
+        } else {
+
+            $translationManager = $this->getTranslationManager();
+            $transKeys = $translationManager->findAll();
+            foreach ($transKeys as $tKey) {
+                foreach ($tKey->getTranslations() as $transLabel) {
+                    $filename = $tKey->getDomain() . '.' . $transLabel->getLocale() . '.db';
+
+                    if (!$fs->exists($translationPath . $filename)) {
+                        $fs->touch($translationPath . $filename);
+                    }
                 }
             }
         }
