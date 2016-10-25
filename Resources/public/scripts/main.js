@@ -1,7 +1,6 @@
 (function($){
 	$(document).on('ready ajaxComplete',function(){
 		var $formTable = $('#coolSonataTransPlaceholder').siblings('form').find('table');
-		console.log('diocaro ', $formTable);
 		$formTable.table_scroll({
 			fixedColumnsLeft: 4,
 			columnsInScrollableArea: 5,
