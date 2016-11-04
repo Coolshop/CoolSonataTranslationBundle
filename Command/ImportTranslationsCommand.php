@@ -43,6 +43,12 @@ class ImportTranslationsCommand extends BaseTranslationCommand
     private $catalogues = array();
 
     /**
+     * If true, force update translation
+     * @var bool
+     */
+    private $force = false;
+
+    /**
      * {@inheritDoc}
      */
     protected function configure()
@@ -55,6 +61,12 @@ class ImportTranslationsCommand extends BaseTranslationCommand
                 'c',
                 null,
                 'clear database before import'
+            )
+            ->addOption(
+                'force',
+                'f',
+                null,
+                'overwrite if find a key and locale matching'
             );
     }
 
@@ -86,6 +98,18 @@ class ImportTranslationsCommand extends BaseTranslationCommand
                 $translationManager->removeTranslation($translation);
             }
         }
+
+        if ($input->getOption('force')) {
+            $output->writeln('<warning>force update if found!</warning>');
+            $output->writeln(
+                '<info>--------------------------------------------------------------------------------</info>'
+            );
+            $output->writeln('');
+
+            $this->force = true;
+        }
+
+
 
         $this->generateCatalogues($output);
         $this->importCatalogues($output);
@@ -190,7 +214,10 @@ class ImportTranslationsCommand extends BaseTranslationCommand
                         if (!$transKey) {
                             $transKey = $translationManager->create($key, $domain, false);
                         }
-                        $translationManager->updateTranslation($transKey, $locale, $message, true);
+                        if ($this->force) {
+                            $output->writeln('<comment>Overwriting: ' . $key . " - " . $locale . ': </comment>');
+                            $translationManager->updateTranslation($transKey, $locale, $message, true);
+                        }
 
                     }
                 }
